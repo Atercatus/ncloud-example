@@ -3,15 +3,16 @@ const https = require("https");
 
 const { makeOption } = require("../ncloud/helper");
 
-const vodTranscoder = { host: "vodtranscoder.apigw.ntruss.com" };
+const vodTranscoder = { host: process.env.VOD_TRANSACTION_HOST };
 const now = Date.now().toString();
 
-const fileName = "sample";
-const ext = "png";
+const rand = Math.ceil(Math.random() * 1000000).toString(36);
+const fileName = `${rand}`;
+console.log(`${fileName}-360`);
 const body = JSON.stringify({
   jobName: "apitest3",
-  storageType: "object",
-  notificationUrl: "http://101.101.163.58:4040/test",
+  storageType: process.env.STORAGE_TYPE,
+  notificationUrl: process.env.NOTIFICATION_URL,
   inputs: [
     {
       inputBucketName: process.env.BUCKET_NAME,
@@ -29,22 +30,22 @@ const body = JSON.stringify({
     outputFiles: [
       {
         presetId: process.env.GENERIC_360P_16_9_ID,
-        outputFileName: `${fileName}360`,
+        outputFileName: `${fileName}-360`,
         accessControl: "private"
       },
       {
         presetId: process.env.GENERIC_480P_16_9_ID,
-        outputFileName: `${fileName}480`,
+        outputFileName: `${fileName}-480`,
         accessControl: "private"
       },
       {
         presetId: process.env.GENERIC_720P_ID,
-        outputFileName: `${fileName}720`,
+        outputFileName: `${fileName}-720`,
         accessControl: "private"
       },
       {
         presetId: process.env.GENERIC_1080_ID,
-        outputFileName: `${fileName}1080`,
+        outputFileName: `${fileName}-1080`,
         accessControl: "private"
       }
     ]
